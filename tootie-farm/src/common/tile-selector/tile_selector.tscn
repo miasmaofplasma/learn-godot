@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://caipk52cjwbv7"]
+
+[ext_resource type="Script" uid="uid://p2yu5neuvrx5" path="res://src/common/tile-selector/TileSelector.cs" id="1_q3pkp"]
+
+[node name="TileSelector" type="Node2D" unique_id=519182247]
+script = ExtResource("1_q3pkp")

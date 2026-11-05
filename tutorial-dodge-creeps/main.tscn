@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://cqow47bch5ocs"]
+
+[ext_resource type="Script" uid="uid://cljo0h54ukqrs" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://player.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://c1twr2i6iwxt8" path="res://mob.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dvewtmm6d837k" path="res://hud.tscn" id="4_1bvp3"]
+
+[sub_resource type="Curve2D" id="Curve2D_h2yge"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 958.08386, 0, 0, 0, 0, 0, 957.0859, 1436, 0, 0, 0, 0, -0.998004, 1434, 0, 0, 0, 0, 0, -1)
+}
+point_count = 5
+
+[node name="Main" type="Node" unique_id=478689080]
+script = ExtResource("1_0xm2m")
+mob_scene = ExtResource("2_h2yge")
+
+[node name="Player" parent="." unique_id=531386064 instance=ExtResource("1_ig7tw")]
+visible = false
+
+[node name="MobTimer" type="Timer" parent="." unique_id=815439255]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="." unique_id=1081392317]
+
+[node name="StartTimer" type="Timer" parent="." unique_id=242773100]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="." unique_id=2315500]
+position = Vector2(480, 720)
+
+[node name="MobPath" type="Path2D" parent="." unique_id=1997293535]
+scale = Vector2(1.002, 1)
+curve = SubResource("Curve2D_h2yge")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath" unique_id=1402868557]
+position = Vector2(0, -1)
+rotation = 0.0010437497
+
+[node name="HUD" parent="." unique_id=202168120 instance=ExtResource("4_1bvp3")]
+
+[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="_on_hud_start_game"]

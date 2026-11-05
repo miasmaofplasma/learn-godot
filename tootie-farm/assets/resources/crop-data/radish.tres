@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CropData" format=3 uid="uid://dp2aw28wo67xo"]
+
+[ext_resource type="Script" uid="uid://c7d5i8s3gu144" path="res://src/farming/CropData.cs" id="1_f3uqe"]
+
+[resource]
+script = ExtResource("1_f3uqe")
+GrowthHoursDuration = 8
+SellPrcie = 20
+metadata/_custom_type_script = "uid://c7d5i8s3gu144"

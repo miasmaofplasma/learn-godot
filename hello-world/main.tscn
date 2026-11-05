@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://blcoa8akmk2gm"]
+
+[ext_resource type="Script" uid="uid://c0dgbm3ys4bd3" path="res://main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://u12mrvn1q0os" path="res://player.gd" id="2_0xm2m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uxx7e"]
+size = Vector2(335, 58)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7t2u4"]
+size = Vector2(41, 649.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
+size = Vector2(41, 649.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
+size = Vector2(1236.5, 44.875)
+
+[node name="Main" type="Node2D" unique_id=923307052]
+script = ExtResource("1_main")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1555416845]
+position = Vector2(579, 300)
+script = ExtResource("2_0xm2m")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1621466329]
+shape = SubResource("RectangleShape2D_uxx7e")
+
+[node name="Label" type="Label" parent="Player" unique_id=1021272079]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -156.5
+offset_top = -34.5
+offset_right = 156.5
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "Hello, Godot!"
+metadata/_edit_use_anchors_ = true
+
+[node name="Fireworks" type="CPUParticles2D" parent="Player" unique_id=2081491740]
+emitting = false
+amount = 60
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 180.0
+initial_velocity_max = 340.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color = Color(1, 0.84, 0.2, 1)
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=630953543]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1553670927]
+position = Vector2(-22, 323.25)
+shape = SubResource("RectangleShape2D_7t2u4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1326732776]
+position = Vector2(1174, 324)
+shape = SubResource("RectangleShape2D_0xm2m")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1407841255]
+position = Vector2(576.75, -20.5625)
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1279642606]
+position = Vector2(578, 671)
+shape = SubResource("RectangleShape2D_h2yge")

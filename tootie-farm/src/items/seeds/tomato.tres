@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SeedItem" format=3 uid="uid://dw0xgvgldc13n"]
+
+[ext_resource type="Resource" uid="uid://csbw8pyie0dso" path="res://assets/resources/crop-data/tomato.tres" id="1_sb3lb"]
+[ext_resource type="Texture2D" uid="uid://cref3sxp2lwny" path="res://assets/resources/items/seeds/tomato.tres" id="1_xcshl"]
+[ext_resource type="Script" uid="uid://drbuces7qcu3c" path="res://src/items/SeedItem.cs" id="2_sb3lb"]
+
+[resource]
+script = ExtResource("2_sb3lb")
+GrownCrop = ExtResource("1_sb3lb")
+Id = "seed_carrot"
+DisplayName = "Carrot Seeds"
+Icon = ExtResource("1_xcshl")
+MaxStack = 99
+metadata/_custom_type_script = "uid://drbuces7qcu3c"

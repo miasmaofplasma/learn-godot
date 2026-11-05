@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dncnddidnw5wy"]
+
+[ext_resource type="Script" uid="uid://b4wh0gsrkg1uo" path="res://Main.cs" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://bklvwcyblm48" path="res://SignalReactor.cs" id="2_0xm2m"]
+
+[node name="Main" type="Node" unique_id=1471136767]
+script = ExtResource("1_ig7tw")
+
+[node name="SignalReactor" type="Node" parent="." unique_id=715593186]
+script = ExtResource("2_0xm2m")

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ToolItem" format=3 uid="uid://cuwl3b0gmjrj0"]
+
+[ext_resource type="Texture2D" uid="uid://cypmepc3w4yrt" path="res://assets/resources/items/tools/watering_can.tres" id="1_4hkdo"]
+[ext_resource type="Script" uid="uid://m1vohqlio7vs" path="res://src/items/ToolItem.cs" id="2_2prb5"]
+
+[resource]
+script = ExtResource("2_2prb5")
+Action = 1
+Id = "sythe"
+DisplayName = "Sythe"
+Icon = ExtResource("1_4hkdo")
+metadata/_custom_type_script = "uid://m1vohqlio7vs"

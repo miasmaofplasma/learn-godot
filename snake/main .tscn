@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://cp3hby55c4x3o"]
+
+[ext_resource type="Script" uid="uid://dmq6djc3ixos8" path="res://main_.gd" id="1_45ejl"]
+[ext_resource type="PackedScene" uid="uid://b0qrhjsdb0sta" path="res://game_board.tscn" id="1_366sx"]
+[ext_resource type="PackedScene" uid="uid://g0oetsoqc1w1" path="res://snake.tscn" id="2_8u2rm"]
+[ext_resource type="Script" uid="uid://cmrs3nbxci404" path="res://food_spawner.gd" id="3_u1rqa"]
+[ext_resource type="Script" uid="uid://n7gjwixprxco" path="res://TickTimer.cs" id="4_ptx68"]
+[ext_resource type="Texture2D" uid="uid://bb5csqpyqldw" path="res://assets/apple.png" id="4_v55j5"]
+
+[node name="Main" type="Node2D" unique_id=2094016216]
+script = ExtResource("1_45ejl")
+
+[node name="GameBoard" parent="." unique_id=1883870092 instance=ExtResource("1_366sx")]
+grid_width = 15
+grid_height = 15
+
+[node name="Snake" parent="." unique_id=1597302253 node_paths=PackedStringArray("board") instance=ExtResource("2_8u2rm")]
+board = NodePath("../GameBoard")
+
+[node name="TickTimer" type="Timer" parent="." unique_id=481929334]
+wait_time = 0.2
+autostart = true
+script = ExtResource("4_ptx68")
+
+[node name="FoodManager" type="Node" parent="." unique_id=793452568 node_paths=PackedStringArray("board")]
+script = ExtResource("3_u1rqa")
+board = NodePath("../GameBoard")
+
+[node name="FoodSprite" type="Sprite2D" parent="FoodManager" unique_id=2085142231]
+texture = ExtResource("4_v55j5")
+
+[connection signal="died" from="Snake" to="." method="_on_snake_died"]
+[connection signal="moved" from="Snake" to="GameBoard" method="_on_snake_moved"]
+[connection signal="moved" from="Snake" to="FoodManager" method="_on_snake_moved"]
+[connection signal="timeout" from="TickTimer" to="Snake" method="_on_tick_timer_timeout"]
+[connection signal="food_eaten" from="FoodManager" to="Snake" method="_on_food_manager_food_eaten"]

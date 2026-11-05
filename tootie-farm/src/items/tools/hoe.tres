@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ToolItem" format=3 uid="uid://kxslt5odxkuk"]
+
+[ext_resource type="Texture2D" uid="uid://8j5gb8yfkwvl" path="res://assets/resources/items/tools/hoe.tres" id="1_a3arm"]
+[ext_resource type="Script" uid="uid://m1vohqlio7vs" path="res://src/items/ToolItem.cs" id="1_oda65"]
+
+[resource]
+script = ExtResource("1_oda65")
+Id = "hoe"
+DisplayName = "Hoe"
+Icon = ExtResource("1_a3arm")
+metadata/_custom_type_script = "uid://m1vohqlio7vs"

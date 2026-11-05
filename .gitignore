@@ -1,0 +1,67 @@
+# ==========================================
+# Godot Monorepo .gitignore
+# ==========================================
+
+# Godot 4+ engine import caches and internal editor state
+.godot/
+*/.godot/
+**/.godot/
+
+# Android / iOS export artifacts
+android/
+**/android/
+ios/
+**/ios/
+
+# Godot editor / scene caches (Godot 3 legacy fallback)
+.import/
+**/.import/
+
+# Godot exported binaries and packages
+*.pck
+*.apk
+*.aab
+
+# Godot Mono / .NET build artifacts
+[Bb]in/
+[Oo]bj/
+**/bin/**
+**/obj/**
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Keep GdUnit4 runner scripts inside addons/gdUnit4/bin/
+!**/addons/gdUnit4/bin/
+!**/addons/gdUnit4/bin/*.gd
+!**/addons/gdUnit4/bin/*.uid
+
+# Rust (GDExtension)
+target/
+**/target/
+**/*.rs.bk
+
+# Devenv & direnv local state and files
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+.direnv/
+**/.direnv/
+
+# Test / QA reports
+reports/
+**/reports/
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Pre-commit cache
+.pre-commit-config.yaml

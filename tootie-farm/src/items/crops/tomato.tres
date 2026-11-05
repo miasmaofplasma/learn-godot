@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CropItem" format=3 uid="uid://c5wm81kk5mcd5"]
+
+[ext_resource type="Script" uid="uid://bsl83msd2oaaj" path="res://src/items/CropItem.cs" id="1_5ff4s"]
+[ext_resource type="Resource" uid="uid://csbw8pyie0dso" path="res://assets/resources/crop-data/tomato.tres" id="1_qqcam"]
+[ext_resource type="Texture2D" uid="uid://b16ecoxbys20l" path="res://assets/resources/items/crops/tomato_icon.tres" id="1_vvtfc"]
+
+[resource]
+script = ExtResource("1_5ff4s")
+CropData = ExtResource("1_qqcam")
+Id = "crop_tomato"
+DisplayName = "Tomato"
+Icon = ExtResource("1_vvtfc")
+MaxStack = 99
+metadata/_custom_type_script = "uid://bsl83msd2oaaj"

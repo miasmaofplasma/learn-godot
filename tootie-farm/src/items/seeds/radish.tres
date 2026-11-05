@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SeedItem" format=3 uid="uid://bxgkuauattgdj"]
+
+[ext_resource type="Resource" uid="uid://dp2aw28wo67xo" path="res://assets/resources/crop-data/radish.tres" id="1_0uv8d"]
+[ext_resource type="Texture2D" uid="uid://uq0vd7ldi185" path="res://assets/resources/items/seeds/radish.tres" id="1_0xbov"]
+[ext_resource type="Script" uid="uid://drbuces7qcu3c" path="res://src/items/SeedItem.cs" id="2_0uv8d"]
+
+[resource]
+script = ExtResource("2_0uv8d")
+GrownCrop = ExtResource("1_0uv8d")
+Id = "seed_radish"
+DisplayName = "Radish Seeds"
+Icon = ExtResource("1_0xbov")
+MaxStack = 99
+metadata/_custom_type_script = "uid://drbuces7qcu3c"

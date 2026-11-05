@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bo7ydslpbsp7e"]
+
+[ext_resource type="Script" uid="uid://btl0ntvo51lrg" path="res://src/farming/FarmManager.cs" id="1_h13da"]
+
+[node name="FarmManager" type="Node" unique_id=720521802]
+script = ExtResource("1_h13da")

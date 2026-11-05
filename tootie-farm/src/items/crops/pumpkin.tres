@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CropItem" format=3 uid="uid://bbh4rleaflj1j"]
+
+[ext_resource type="Texture2D" uid="uid://1gkbc7o47dtf" path="res://assets/resources/items/crops/pumpkin_icon.tres" id="1_4rajb"]
+[ext_resource type="Resource" uid="uid://cc0whalnpvn2i" path="res://assets/resources/crop-data/pumpkin.tres" id="1_dxvsm"]
+[ext_resource type="Script" uid="uid://bsl83msd2oaaj" path="res://src/items/CropItem.cs" id="1_q8qse"]
+
+[resource]
+script = ExtResource("1_q8qse")
+CropData = ExtResource("1_dxvsm")
+Id = "crop_pumpkin"
+DisplayName = "Pumpkin"
+Icon = ExtResource("1_4rajb")
+MaxStack = 99
+metadata/_custom_type_script = "uid://bsl83msd2oaaj"

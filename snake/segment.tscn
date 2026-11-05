@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b8s6kn8gly1r8"]
+
+[ext_resource type="Script" uid="uid://cw5tw4u01fnqa" path="res://segment.gd" id="1_6thxi"]
+
+[node name="Segment" type="Sprite2D" unique_id=71779396]
+script = ExtResource("1_6thxi")

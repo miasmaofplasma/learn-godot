@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b5rprpdm4xwy3"]
+
+[ext_resource type="Script" uid="uid://ccncfy07ud25y" path="res://scenes/world/World.cs" id="1_world"]
+[ext_resource type="PackedScene" uid="uid://bo7ydslpbsp7e" path="res://src/farming/farm_manager.tscn" id="2_6m72w"]
+[ext_resource type="PackedScene" uid="uid://cxd8bhb1le11s" path="res://src/maps/outside/outside_map.tscn" id="3_sl2e5"]
+[ext_resource type="PackedScene" uid="uid://b2brqy0m46pix" path="res://src/player/player.tscn" id="4_player"]
+
+[node name="World" type="Node2D" unique_id=611135889]
+y_sort_enabled = true
+script = ExtResource("1_world")
+
+[node name="FarmManager" parent="." unique_id=720521802 node_paths=PackedStringArray("_outsideMap") instance=ExtResource("2_6m72w")]
+_outsideMap = NodePath("../OutsideMap")
+
+[node name="OutsideMap" parent="." unique_id=487502240 instance=ExtResource("3_sl2e5")]
+
+[node name="Player" parent="." unique_id=1491153778 node_paths=PackedStringArray("farmManager") instance=ExtResource("4_player")]
+position = Vector2(722, 768)
+farmManager = NodePath("../FarmManager")

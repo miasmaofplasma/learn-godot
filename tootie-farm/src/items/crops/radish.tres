@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CropItem" format=3 uid="uid://c708ay4oq1vh6"]
+
+[ext_resource type="Script" uid="uid://bsl83msd2oaaj" path="res://src/items/CropItem.cs" id="1_0pqau"]
+[ext_resource type="Resource" uid="uid://dp2aw28wo67xo" path="res://assets/resources/crop-data/radish.tres" id="1_1a6v4"]
+[ext_resource type="Texture2D" uid="uid://bw3eka5x4pyo4" path="res://assets/resources/items/crops/radish_icon.tres" id="1_4wa82"]
+
+[resource]
+script = ExtResource("1_0pqau")
+CropData = ExtResource("1_1a6v4")
+Id = "crop_radishy"
+DisplayName = "Radish"
+Icon = ExtResource("1_4wa82")
+MaxStack = 99
+metadata/_custom_type_script = "uid://bsl83msd2oaaj"
