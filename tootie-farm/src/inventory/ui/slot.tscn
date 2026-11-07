@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bhfir4b54exip"]
+
+[ext_resource type="Script" uid="uid://deteraeq6e62k" path="res://src/inventory/ui/Slot.cs" id="1_ll8f4"]
+
+[node name="Slot" type="PanelContainer" unique_id=606425812]
+custom_minimum_size = Vector2(48, 48)
+script = ExtResource("1_ll8f4")

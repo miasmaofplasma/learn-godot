@@ -1,5 +1,7 @@
-using Godot;
 using System;
+using Godot;
+
+namespace TootieFarm;
 
 public partial class TileSelector : Node2D
 {
@@ -8,11 +10,20 @@ public partial class TileSelector : Node2D
     public Vector2I TileSize { get; set; } = new Vector2I(32, 32);
 
     [Export]
-    public Color BorderColor { get; set; } = Colors.Yellow;
+    public Color BorderColor
+    {
+        get;
+        set
+        {
+            field = value;
+            QueueRedraw();
+        }
+    } = Colors.Yellow;
 
     public Vector2I CurrentCell
     {
-        get; private set
+        get;
+        private set
         {
             if (field != value)
             {
@@ -23,7 +34,8 @@ public partial class TileSelector : Node2D
     }
     public Vector2 TargetPosition
     {
-        get; set
+        get;
+        set
         {
             if (field != value)
             {
@@ -32,18 +44,17 @@ public partial class TileSelector : Node2D
             }
         }
     }
+
     public override void _Draw()
     {
         DrawRect(new Rect2(0, 0, TileSize.X, TileSize.Y), BorderColor, filled: false, width: 2f);
     }
-    public override void _Ready()
-    {
-    }
+
+    public override void _Ready() { }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
-    }
+    public override void _Process(double delta) { }
+
     private Vector2I _GetCell(Vector2 targetPosition)
     {
         int cellX = Mathf.FloorToInt(targetPosition.X / TileSize.X);

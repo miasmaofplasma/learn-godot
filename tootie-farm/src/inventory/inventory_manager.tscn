@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ca3yw5g1gpbsj"]
+
+[ext_resource type="Script" uid="uid://5mxvi1qkmx2w" path="res://src/inventory/InventoryManager.cs" id="1_hdchu"]
+
+[node name="InventoryManager" type="Node" unique_id=89734970]
+script = ExtResource("1_hdchu")

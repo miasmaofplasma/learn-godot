@@ -1,5 +1,5 @@
-using Godot;
 using System;
+using Godot;
 using TootieFarm.Farming;
 
 public enum SoilState
@@ -8,7 +8,7 @@ public enum SoilState
     PlowedDry,
     FlatWet,
     PlowedWet,
-    Cleared
+    Cleared,
 }
 
 public partial class OutsideMap : Node2D
@@ -33,7 +33,12 @@ public partial class OutsideMap : Node2D
 
     public virtual bool HasObstacle(Vector2I cell)
     {
-        return ObjectsLayer?.GetCellSourceId(cell) != -1;
+        TileData objectData = ObjectsLayer.GetCellTileData(cell);
+        if (objectData == null)
+        {
+            return false;
+        }
+        return objectData.GetCustomData("blocks_farming").AsBool();
     }
 
     public virtual SoilState GetFarmSoilState(Vector2I cell)
@@ -48,6 +53,7 @@ public partial class OutsideMap : Node2D
             _ => SoilState.Cleared,
         };
     }
+
     public virtual bool IsGrass(Vector2I cell)
     {
         return GroundLayer?.GetCellAtlasCoords(cell).Y == 0;
@@ -76,6 +82,7 @@ public partial class OutsideMap : Node2D
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
     }
+
     public virtual void SetCrop(Vector2I cell, CropType crop, int stage)
     {
         int stageCol = Mathf.Clamp(stage, 0, 3);
