@@ -23,36 +23,37 @@ alignment = 2
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer" unique_id=507132476]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CenterContainer" unique_id=1657794431]
+[node name="SlotsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CenterContainer" unique_id=1657794431]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="Slot1" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=606425812 instance=ExtResource("2_ojtix")]
+[node name="Slot1" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=606425812 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot2" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=1375674600 instance=ExtResource("2_ojtix")]
+[node name="Slot2" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=1375674600 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot3" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=924179852 instance=ExtResource("2_ojtix")]
+[node name="Slot3" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=924179852 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot4" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=1572598085 instance=ExtResource("2_ojtix")]
+[node name="Slot4" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=1572598085 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot5" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=1186663810 instance=ExtResource("2_ojtix")]
+[node name="Slot5" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=1186663810 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot6" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=342982948 instance=ExtResource("2_ojtix")]
+[node name="Slot6" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=342982948 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot7" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=1876452237 instance=ExtResource("2_ojtix")]
+[node name="Slot7" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=1876452237 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot8" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=1485158871 instance=ExtResource("2_ojtix")]
+[node name="Slot8" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=1485158871 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot9" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=469860099 instance=ExtResource("2_ojtix")]
+[node name="Slot9" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=469860099 instance=ExtResource("2_ojtix")]
 layout_mode = 2
 
-[node name="Slot10" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" unique_id=793989823 instance=ExtResource("2_ojtix")]
+[node name="Slot10" parent="MarginContainer/VBoxContainer/CenterContainer/SlotsContainer" unique_id=793989823 instance=ExtResource("2_ojtix")]
 layout_mode = 2

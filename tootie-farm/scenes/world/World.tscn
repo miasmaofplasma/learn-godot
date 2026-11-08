@@ -11,7 +11,8 @@
 y_sort_enabled = true
 script = ExtResource("1_world")
 
-[node name="InventoryUI" parent="." unique_id=1668824589 instance=ExtResource("2_i1jm3")]
+[node name="InventoryUI" parent="." unique_id=1668824589 node_paths=PackedStringArray("_inventoryManager") instance=ExtResource("2_i1jm3")]
+_inventoryManager = NodePath("../InventoryManager")
 
 [node name="FarmManager" parent="." unique_id=720521802 node_paths=PackedStringArray("_outsideMap") instance=ExtResource("2_6m72w")]
 _outsideMap = NodePath("../OutsideMap")

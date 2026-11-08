@@ -59,33 +59,39 @@ public partial class Player : CharacterBody2D
     {
         if (inputEvent.IsActionPressed("use_tool"))
         {
-            UseEquippedTool();
+            UseEquippedItem();
         }
     }
 
-    private void OnSelectedItemChanged(ushort slot, ItemData? item)
+    private void OnSelectedItemChanged(ushort slot)
     {
-        _selectedItem = item;
+        _selectedItem = _inventory.GetSelectedItem()?.Item;
         UpdateTileSelector();
     }
 
-    private void UseEquippedTool()
+    private void UseEquippedItem()
     {
-        if (_selectedItem == null || _selectedItem is not ToolItem)
+        var cell = _tileSelector.CurrentCell;
+        var success = false;
+        if (_selectedItem == null)
         {
             return;
         }
+        else if (_selectedItem is ToolItem tool)
+        {
+            UseToolResult result = farmManager.UseTool(cell, tool);
+            success = result.Success;
+        }
+        else if (_selectedItem is SeedItem seed)
+        {
+            success = farmManager.PlantSeed(cell, seed);
+            if (success)
+            {
+                _inventory.DecrementItem(seed);
+            }
+        }
 
-        UseToolResult result = farmManager.UseTool(
-            _tileSelector.CurrentCell,
-            (ToolItem)_selectedItem
-        );
         UpdateTileSelector();
-        GD.Print(
-            result.Success
-                ? $"Used {_hoeTemporary.DisplayName} on {_tileSelector.CurrentCell}"
-                : $"Can't use {_hoeTemporary.DisplayName} on {_tileSelector.CurrentCell}"
-        );
     }
 
     private void UpdateAnimation(Vector2 direction)
@@ -124,9 +130,8 @@ public partial class Player : CharacterBody2D
         var result = farmManager.CanUseItem(_tileSelector.CurrentCell, currentItem.Item);
         var color = result switch
         {
-            CanUseItemEnum.Yes => Colors.Yellow,
-            CanUseItemEnum.No => Colors.Red,
-            CanUseItemEnum.NotFarmingTile => Colors.Yellow,
+            CanUseItemEnum.Yes => Colors.Green,
+            CanUseItemEnum.No or CanUseItemEnum.NotFarmingTile => Colors.Red,
             _ => throw new NotImplementedException(),
         };
 

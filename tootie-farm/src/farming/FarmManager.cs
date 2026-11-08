@@ -10,12 +10,13 @@ public enum CanUseItemEnum
     No,
     NotFarmingTile,
 }
-
 public record struct UseToolResult(bool Success, List<Items.CropItem> HarvestedCrops);
+internal record Crop(CropData CropData);
 public partial class FarmManager : Node
 {
     [Export]
     public OutsideMap _outsideMap { get; set; } = null!;
+    private Dictionary<Vector2I, Crop> _crops = new();
     public override void _Ready()
     {
         FatalException.ThrowIfNull(_outsideMap, nameof(OutsideMap), this);
@@ -26,7 +27,7 @@ public partial class FarmManager : Node
         {
             Items.ToolItem tool => CanUseTool(cell, tool),
             Items.SeedItem seed => CanPlantSeed(cell, seed),
-            _ => IsFarmingTile(cell) ? CanUseItemEnum.NotFarmingTile : CanUseItemEnum.No,
+            _ => IsTileUsable(cell)
         };
     }
     public UseToolResult UseTool(Vector2I cell, Items.ToolItem tool)
@@ -41,17 +42,21 @@ public partial class FarmManager : Node
     }
     public bool PlantSeed(Vector2I cell, Items.SeedItem seed)
     {
+        if (!CanPlantSeed(cell, seed).Equals(CanUseItemEnum.Yes))
+        {
+            return false;
+        }
+
+        _crops.Add(cell, new Crop((CropData)seed.GrownCrop.Duplicate(deep: true)));
+        _outsideMap.SetCrop(cell, seed.GrownCrop.CropType, seed.GrownCrop.CropCycles.GetStage());
         return true;
-    }
-    private bool IsFarmingTile(Vector2I cell)
-    {
-        return _outsideMap.IsGrass(cell) && !_outsideMap.HasObstacle(cell);
     }
     private CanUseItemEnum CanUseTool(Vector2I cell, Items.ToolItem tool)
     {
-        if (!IsFarmingTile(cell))
+        var isTileUsable = IsTileUsable(cell);
+        if (isTileUsable != CanUseItemEnum.Yes)
         {
-            return CanUseItemEnum.NotFarmingTile;
+            return isTileUsable;
         }
 
         return tool.Action switch
@@ -64,11 +69,18 @@ public partial class FarmManager : Node
     }
     private CanUseItemEnum CanPlantSeed(Vector2I cell, Items.SeedItem tool)
     {
-        if (!IsFarmingTile(cell))
+        if (_outsideMap.GetFarmSoilState(cell) is SoilState.Cleared or SoilState.FlatDry or SoilState.FlatWet)
         {
-            return CanUseItemEnum.NotFarmingTile;
+            return CanUseItemEnum.No;
         }
-        return CanUseItemEnum.No;
+
+        var isTileUsable = IsTileUsable(cell);
+        if (isTileUsable != CanUseItemEnum.Yes)
+        {
+            return isTileUsable;
+        }
+
+        return CanUseItemEnum.Yes;
     }
 
     private UseToolResult UseTillAction(Vector2I cell)
@@ -122,15 +134,30 @@ public partial class FarmManager : Node
         // return new UseToolResult { Success = true };
     }
 
-    private CanUseItemEnum CanTill(Vector2I cell)
+    private CanUseItemEnum IsTileUsable(Vector2I cell)
     {
-        if (!IsFarmingTile(cell))
+        if (!_outsideMap.IsGrass(cell))
         {
             return CanUseItemEnum.NotFarmingTile;
         }
 
+        if (_outsideMap.HasObstacle(cell))
+        {
+            return CanUseItemEnum.No;
+        }
+
+        return CanUseItemEnum.Yes;
+    }
+    private CanUseItemEnum CanTill(Vector2I cell)
+    {
+        var isTileUsable = IsTileUsable(cell);
+        if (isTileUsable != CanUseItemEnum.Yes)
+        {
+            return isTileUsable;
+        }
+
         var cellType = _outsideMap.GetFarmSoilState(cell);
-        if (cellType is SoilState.Cleared or SoilState.FlatWet or SoilState.FlatDry)
+        if (cellType is SoilState.Cleared or SoilState.FlatDry or SoilState.FlatWet)
         {
             return CanUseItemEnum.Yes;
         }
@@ -139,10 +166,12 @@ public partial class FarmManager : Node
     }
     private CanUseItemEnum CanWater(Vector2I cell)
     {
-        if (!IsFarmingTile(cell))
+        var isTileUsable = IsTileUsable(cell);
+        if (isTileUsable != CanUseItemEnum.Yes)
         {
-            return CanUseItemEnum.NotFarmingTile;
+            return isTileUsable;
         }
+
         var cellType = _outsideMap.GetFarmSoilState(cell);
         if (cellType is SoilState.FlatDry or SoilState.PlowedDry)
         {
@@ -153,12 +182,34 @@ public partial class FarmManager : Node
     }
     private CanUseItemEnum CanHarvest(Vector2I cell)
     {
-        if (!IsFarmingTile(cell))
+        var isTileUsable = IsTileUsable(cell);
+        if (isTileUsable != CanUseItemEnum.Yes)
         {
-            return CanUseItemEnum.NotFarmingTile;
+            return isTileUsable;
         }
-        throw new NotImplementedException();
 
+        throw new NotImplementedException();
     }
 
+    public void IncrementDay()
+    {
+        foreach (var (cell, crop) in _crops)
+        {
+            crop.CropData.CropCycles.IncrementDay();
+            _outsideMap.SetCrop(cell, crop.CropData.CropType, crop.CropData.CropCycles.GetStage());
+        }
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
+        {
+            string letter = OS.GetKeycodeString(keyEvent.Keycode);
+            if (letter == "R")
+            {
+                GD.Print("incrementing day");
+                IncrementDay();
+            }
+        }
+    }
 }

@@ -5,3 +5,21 @@
 [node name="Slot" type="PanelContainer" unique_id=606425812]
 custom_minimum_size = Vector2(48, 48)
 script = ExtResource("1_ll8f4")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=1539653936]
+layout_mode = 2
+
+[node name="SelectedBox" type="ReferenceRect" parent="." unique_id=1209063504]
+visible = false
+layout_mode = 2
+border_color = Color(1, 0.96862745, 0, 1)
+border_width = 2.0
+editor_only = false
+
+[node name="CountLabel" type="Label" parent="." unique_id=800284257]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 6
+horizontal_alignment = 2
+vertical_alignment = 2

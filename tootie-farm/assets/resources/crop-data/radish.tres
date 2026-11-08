@@ -1,9 +1,14 @@
 [gd_resource type="Resource" script_class="CropData" format=3 uid="uid://dp2aw28wo67xo"]
 
 [ext_resource type="Script" uid="uid://c7d5i8s3gu144" path="res://src/farming/CropData.cs" id="1_f3uqe"]
+[ext_resource type="Script" uid="uid://c0q0oap7vjqc7" path="res://src/farming/CropCycles.cs" id="1_nxh3v"]
+
+[sub_resource type="Resource" id="Resource_1cdna"]
+script = ExtResource("1_nxh3v")
+GrowthDaysDuration = 1
+metadata/_custom_type_script = "uid://c0q0oap7vjqc7"
 
 [resource]
 script = ExtResource("1_f3uqe")
-GrowthHoursDuration = 8
-SellPrcie = 20
+CropCycles = SubResource("Resource_1cdna")
 metadata/_custom_type_script = "uid://c7d5i8s3gu144"

@@ -1,4 +1,3 @@
-using System;
 using TootieFarm.Items;
 
 namespace TootieFarm.Inventory;
@@ -11,17 +10,17 @@ public class InventoryItem
         get;
         set
         {
-            if (Item.MaxStack == 1 && field == 0)
+            if (Item.MaxStack == 1 && value == 0)
             {
                 return;
             }
-            else if (field > Item.MaxStack)
+            else if (value > Item.MaxStack)
             {
-                value = Item.MaxStack;
+                field = Item.MaxStack;
             }
             else
             {
-                value = field;
+                field = value;
             }
         }
     } = 1;

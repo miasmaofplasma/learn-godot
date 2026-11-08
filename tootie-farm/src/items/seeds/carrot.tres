@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="SeedItem" format=3 uid="uid://s6n4x8gyqwe5"]
+[gd_resource type="Resource" script_class="SeedItem" format=3 uid="uid://dn4leoxgy43df"]
 
-[ext_resource type="Texture2D" uid="uid://k23smdcel7id" path="res://assets/resources/items/seeds/pumpkin.tres" id="1_ikue5"]
 [ext_resource type="Resource" uid="uid://dn1k5jk6lm36s" path="res://assets/resources/crop-data/carrot.tres" id="1_q6ree"]
+[ext_resource type="Texture2D" uid="uid://dlpf513ipyqx0" path="res://assets/resources/items/seeds/carrot.tres" id="2_hw6q5"]
 [ext_resource type="Script" uid="uid://drbuces7qcu3c" path="res://src/items/SeedItem.cs" id="2_q6ree"]
 
 [resource]
@@ -9,6 +9,6 @@ script = ExtResource("2_q6ree")
 GrownCrop = ExtResource("1_q6ree")
 Id = "seed_carrot"
 DisplayName = "Carrot Seeds"
-Icon = ExtResource("1_ikue5")
+Icon = ExtResource("2_hw6q5")
 MaxStack = 99
 metadata/_custom_type_script = "uid://drbuces7qcu3c"

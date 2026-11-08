@@ -47,7 +47,7 @@ public class FarmManagerTests
     }
 
     [TestCase]
-    public void CanUseItem_HoeOnObstacle_ReturnsNotFarmingTile()
+    public void CanUseItem_HoeOnObstacle_ReturnsNo()
     {
         var cell = new Vector2I(5, 5);
         _testMap.GrassCells.Add(cell);
@@ -55,7 +55,7 @@ public class FarmManagerTests
 
         CanUseItemEnum result = _farm.CanUseItem(cell, _hoe);
 
-        AssertObject(result).IsEqual(CanUseItemEnum.NotFarmingTile);
+        AssertObject(result).IsEqual(CanUseItemEnum.No);
     }
 
     [TestCase]

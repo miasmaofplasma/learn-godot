@@ -40,7 +40,6 @@ public partial class OutsideMap : Node2D
         }
         return objectData.GetCustomData("blocks_farming").AsBool();
     }
-
     public virtual SoilState GetFarmSoilState(Vector2I cell)
     {
         Vector2I cellType = FarmLayer.GetCellAtlasCoords(cell);
@@ -53,7 +52,6 @@ public partial class OutsideMap : Node2D
             _ => SoilState.Cleared,
         };
     }
-
     public virtual bool IsGrass(Vector2I cell)
     {
         return GroundLayer?.GetCellAtlasCoords(cell).Y == 0;
@@ -82,7 +80,6 @@ public partial class OutsideMap : Node2D
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
     }
-
     public virtual void SetCrop(Vector2I cell, CropType crop, int stage)
     {
         int stageCol = Mathf.Clamp(stage, 0, 3);
