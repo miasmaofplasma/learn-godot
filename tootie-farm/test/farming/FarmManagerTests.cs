@@ -7,6 +7,7 @@ using TootieFarm.Items;
 namespace TootieFarm.Tests;
 
 [TestSuite]
+[RequireGodotRuntime]
 public class FarmManagerTests
 {
     private TestOutsideMap _testMap = null!;
@@ -239,6 +240,82 @@ public class FarmManagerTests
     }
 
     [TestCase]
+    public void IncrementDay_CropNeedsWaterAgainEachDay()
+    {
+        var cell = new Vector2I(2, 2);
+        _testMap.GrassCells.Add(cell);
+        _testMap.SetSoil(cell, SoilState.PlowedWet);
+        _farm.PlantSeed(cell, CreateTestSeed(duration: 4));
+
+        _farm.IncrementDay();
+        AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(1);
+        AssertObject(_testMap.GetFarmSoilState(cell)).IsEqual(SoilState.PlowedDry);
+
+        _farm.IncrementDay();
+        AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(1);
+
+        _farm.UseTool(cell, _wateringCan);
+        _farm.IncrementDay();
+        AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(2);
+    }
+
+    [TestCase]
+    public void IncrementDay_DryCropDoesNotGrowUntilWatered()
+    {
+        var cell = new Vector2I(2, 2);
+        _testMap.GrassCells.Add(cell);
+        _testMap.SetSoil(cell, SoilState.PlowedDry);
+        _farm.PlantSeed(cell, CreateTestSeed(duration: 4));
+
+        _farm.IncrementDay();
+        AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(0);
+
+        _farm.UseTool(cell, _wateringCan);
+        _farm.IncrementDay();
+        AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(1);
+    }
+
+    [TestCase]
+    public void WorldClock_NewDayAdvancesWateredCrop()
+    {
+        var world = GD.Load<PackedScene>("res://scenes/world/World.tscn").Instantiate<Node>();
+        ((SceneTree)Engine.GetMainLoop()).Root.AddChild(world);
+        try
+        {
+            var farm = world.GetNode<FarmManager>("FarmManager");
+            var map = world.GetNode<OutsideMap>("OutsideMap");
+            var clock = world.GetNode<Timemanger>("TimeManager");
+            var timer = clock.GetNode<Timer>("WorldTimer");
+            timer.Stop();
+
+            Vector2I? farmableCell = null;
+            foreach (var cell in map.GroundLayer.GetUsedCells())
+            {
+                if (map.IsGrass(cell) && !map.HasObstacle(cell))
+                {
+                    farmableCell = cell;
+                    break;
+                }
+            }
+            AssertBool(farmableCell.HasValue).IsTrue();
+            var target = farmableCell!.Value;
+            map.SetSoil(target, SoilState.PlowedWet);
+            AssertBool(farm.PlantSeed(target, CreateTestSeed(duration: 4))).IsTrue();
+            AssertInt(map.CropsLayer.GetCellAtlasCoords(target).X).IsEqual(0);
+
+            for (int i = 0; i < 16; i++)
+                timer.EmitSignal(Timer.SignalName.Timeout);
+            AssertInt((int)clock.CurrentDay).IsEqual(1);
+
+            AssertInt(map.CropsLayer.GetCellAtlasCoords(target).X).IsEqual(1);
+        }
+        finally
+        {
+            world.Free();
+        }
+    }
+
+    [TestCase]
     public void IncrementDay_AdvancesCropStageToMaxStage()
     {
         var cell = new Vector2I(2, 2);
@@ -250,22 +327,27 @@ public class FarmManagerTests
         AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(0);
 
         // Day 1
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(1);
 
         // Day 2
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(2);
 
         // Day 3
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(3);
 
         // Day 4 (Finished/Ripe)
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(3);
 
         // Beyond Day 4 stays capped at stage 3
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cell].Stage).IsEqual(3);
     }
@@ -286,6 +368,7 @@ public class FarmManagerTests
         _farm.PlantSeed(cellA, seedA);
 
         // Advance 1 day
+        _farm.UseTool(cellA, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cellA].Stage).IsEqual(1);
 
@@ -294,6 +377,8 @@ public class FarmManagerTests
         AssertInt(_testMap.PlacedCrops[cellB].Stage).IsEqual(0);
 
         // Advance another day: Crop A should be stage 2, Crop B should be stage 1
+        _farm.UseTool(cellA, _wateringCan);
+        _farm.UseTool(cellB, _wateringCan);
         _farm.IncrementDay();
         AssertInt(_testMap.PlacedCrops[cellA].Stage).IsEqual(2);
         AssertInt(_testMap.PlacedCrops[cellB].Stage).IsEqual(1);
@@ -323,7 +408,9 @@ public class FarmManagerTests
         _farm.PlantSeed(cell, seed);
 
         // Advance to ripe
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
 
         CanUseItemEnum result = _farm.CanUseItem(cell, _basket);
@@ -341,7 +428,9 @@ public class FarmManagerTests
         _farm.PlantSeed(cell, seed);
 
         // Advance to ripe
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
+        _farm.UseTool(cell, _wateringCan);
         _farm.IncrementDay();
 
         UseToolResult result = _farm.UseTool(cell, _basket);

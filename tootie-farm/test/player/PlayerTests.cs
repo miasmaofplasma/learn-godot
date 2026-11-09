@@ -93,7 +93,10 @@ public class PlayerTests
         var seed = (SeedItem)_inventory.GetSelectedItem()!.Item;
         UseItem();
         for (int day = 0; day < seed.GrownCrop.CropCycles.GrowthDaysDuration; day++)
+        {
+            _farm.UseTool(_cell, ItemRepository._toolWateringCan);
             _farm.IncrementDay();
+        }
         _inventory.SelectedSlot = 2;
 
         UseItem();

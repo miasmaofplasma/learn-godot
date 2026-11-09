@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ca3yw5g1gpbsj" path="res://src/inventory/inventory_manager.tscn" id="5_qxiha"]
 [ext_resource type="PackedScene" uid="uid://uyb7onif7c2r" path="res://scenes/world/day_night_cycle.tscn" id="6_qh0kd"]
 [ext_resource type="Script" uid="uid://bdihyptimgwgo" path="res://scenes/world/DayNightCycle.cs" id="6_yr1n6"]
+[ext_resource type="PackedScene" uid="uid://bqopxrfr1fhha" path="res://scenes/world/ui/Clock.tscn" id="10_l5ull"]
 
 [node name="World" type="Node2D" unique_id=611135889]
 y_sort_enabled = true
@@ -42,3 +43,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 _inventoryManager = NodePath("../../InventoryManager")
+
+[node name="Clock" parent="HUD" unique_id=696134801 node_paths=PackedStringArray("_timeManager") instance=ExtResource("10_l5ull")]
+_timeManager = NodePath("../../TimeManager")

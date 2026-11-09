@@ -10,29 +10,40 @@ public enum CanUseItemEnum
     No,
     NotFarmingTile,
 }
+
 public record struct UseToolResult(bool Success, Items.CropItem? HarvestedCrops);
-internal record Crop(CropData CropData);
+
+internal class Crop
+{
+    public CropData CropData { get; init; } = null!;
+    public bool Watered { get; set; }
+}
+
 public partial class FarmManager : Node
 {
     [Export]
     public OutsideMap _outsideMap { get; set; } = null!;
     private Dictionary<Vector2I, Crop> _crops = new();
+
     [Export]
     private Timemanger _timeManager = null!;
+
     public override void _Ready()
     {
         FatalException.ThrowIfNull(_outsideMap, nameof(OutsideMap), this);
         _timeManager?.DayUpdated += _ => IncrementDay();
     }
+
     public CanUseItemEnum CanUseItem(Vector2I cell, Items.ItemData item)
     {
         return item switch
         {
             Items.ToolItem tool => CanUseTool(cell, tool),
             Items.SeedItem seed => CanPlantSeed(cell, seed),
-            _ => IsTileUsable(cell)
+            _ => IsTileUsable(cell),
         };
     }
+
     public UseToolResult UseTool(Vector2I cell, Items.ToolItem tool)
     {
         return tool.Action switch
@@ -43,6 +54,7 @@ public partial class FarmManager : Node
             _ => throw new NotImplementedException(),
         };
     }
+
     public bool PlantSeed(Vector2I cell, Items.SeedItem seed)
     {
         if (!CanPlantSeed(cell, seed).Equals(CanUseItemEnum.Yes))
@@ -51,10 +63,14 @@ public partial class FarmManager : Node
         }
 
         var cropData = (CropData)seed.GrownCrop.Duplicate(deep: true);
-        _crops.Add(cell, new Crop(cropData));
+        SoilState soilState = _outsideMap.GetFarmSoilState(cell);
+        var watered = soilState.Equals(SoilState.PlowedWet);
+
+        _crops.Add(cell, new Crop { CropData = cropData, Watered = watered });
         _outsideMap.SetCrop(cell, cropData.CropType, cropData.CropCycles.GetStage());
         return true;
     }
+
     private CanUseItemEnum CanUseTool(Vector2I cell, Items.ToolItem tool)
     {
         var isTileUsable = IsTileUsable(cell);
@@ -71,6 +87,7 @@ public partial class FarmManager : Node
             _ => CanUseItemEnum.No,
         };
     }
+
     private CanUseItemEnum CanPlantSeed(Vector2I cell, Items.SeedItem tool)
     {
         var isTileUsable = IsTileUsable(cell);
@@ -79,7 +96,12 @@ public partial class FarmManager : Node
             return isTileUsable;
         }
 
-        if (_outsideMap.GetFarmSoilState(cell) is SoilState.Cleared or SoilState.FlatDry or SoilState.FlatWet)
+        if (
+            _outsideMap.GetFarmSoilState(cell)
+            is SoilState.Cleared
+                or SoilState.FlatDry
+                or SoilState.FlatWet
+        )
         {
             return CanUseItemEnum.No;
         }
@@ -112,6 +134,7 @@ public partial class FarmManager : Node
 
         return new UseToolResult { Success = true };
     }
+
     private UseToolResult UseWaterAction(Vector2I cell)
     {
         GD.Print("Using Water Action");
@@ -129,6 +152,8 @@ public partial class FarmManager : Node
         };
 
         _outsideMap.SetSoil(cell, transformSoilType);
+        SetCropWatered(cell);
+
         return new UseToolResult { Success = true };
     }
 
@@ -146,7 +171,11 @@ public partial class FarmManager : Node
 
         _outsideMap.ClearCrop(cell);
         _crops.Remove(cell);
-        return new UseToolResult { Success = true, HarvestedCrops = Items.ItemRepository.GetCropItem(crop!.CropData.CropType) };
+        return new UseToolResult
+        {
+            Success = true,
+            HarvestedCrops = Items.ItemRepository.GetCropItem(crop!.CropData.CropType),
+        };
     }
 
     private CanUseItemEnum IsTileUsable(Vector2I cell)
@@ -163,6 +192,7 @@ public partial class FarmManager : Node
 
         return CanUseItemEnum.Yes;
     }
+
     private CanUseItemEnum CanTill(Vector2I cell)
     {
         var isTileUsable = IsTileUsable(cell);
@@ -179,6 +209,7 @@ public partial class FarmManager : Node
 
         return CanUseItemEnum.No;
     }
+
     private CanUseItemEnum CanWater(Vector2I cell)
     {
         var isTileUsable = IsTileUsable(cell);
@@ -195,6 +226,7 @@ public partial class FarmManager : Node
 
         return CanUseItemEnum.No;
     }
+
     private CanUseItemEnum CanHarvest(Vector2I cell)
     {
         var isTileUsable = IsTileUsable(cell);
@@ -215,12 +247,36 @@ public partial class FarmManager : Node
         return CanUseItemEnum.Yes;
     }
 
+    private void SetCropWatered(Vector2I cell)
+    {
+        _crops.TryGetValue(cell, out Crop? crop);
+        crop?.Watered = true;
+    }
+
+    private void SetCropUnwatered(Vector2I cell)
+    {
+        _crops.TryGetValue(cell, out Crop? crop);
+        if (crop != null)
+        {
+            crop?.Watered = false;
+            _outsideMap.SetSoil(cell, SoilState.PlowedDry);
+        }
+    }
+
     public void IncrementDay()
     {
         foreach (var (cell, crop) in _crops)
         {
-            crop.CropData.CropCycles.IncrementDay();
-            _outsideMap.SetCrop(cell, crop.CropData.CropType, crop.CropData.CropCycles.GetStage());
+            if (crop.Watered == true)
+            {
+                crop.CropData.CropCycles.IncrementDay();
+                _outsideMap.SetCrop(
+                    cell,
+                    crop.CropData.CropType,
+                    crop.CropData.CropCycles.GetStage()
+                );
+                SetCropUnwatered(cell);
+            }
         }
     }
 }

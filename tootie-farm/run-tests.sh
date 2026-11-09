@@ -8,4 +8,4 @@ TARGET="${1:-res://test/}"
 dotnet build
 
 # 2. Run gdUnit4 test runner headlessly
-godot --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -a "$TARGET"
+godot-mono --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -a "$TARGET"
