@@ -80,7 +80,10 @@ public partial class Player : CharacterBody2D
         else if (_selectedItem is ToolItem tool)
         {
             UseToolResult result = farmManager.UseTool(cell, tool);
-            success = result.Success;
+            if (result.Success && result.HarvestedCrops != null)
+            {
+                _inventory.AddItem(result.HarvestedCrops);
+            }
         }
         else if (_selectedItem is SeedItem seed)
         {

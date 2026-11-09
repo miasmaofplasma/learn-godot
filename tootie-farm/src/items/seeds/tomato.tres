@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("2_sb3lb")
 GrownCrop = ExtResource("1_sb3lb")
-Id = "seed_carrot"
-DisplayName = "Carrot Seeds"
+Id = "seed_tomato"
+DisplayName = "Tomato Seeds"
 Icon = ExtResource("1_xcshl")
 MaxStack = 99
 metadata/_custom_type_script = "uid://drbuces7qcu3c"

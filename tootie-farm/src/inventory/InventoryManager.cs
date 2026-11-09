@@ -37,7 +37,6 @@ public partial class InventoryManager : Node
     }
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-        GD.Print(inputEvent.AsText());
         for (ushort i = 1; i <= 10; i++)
         {
             string actionName = $"inv_{i}";

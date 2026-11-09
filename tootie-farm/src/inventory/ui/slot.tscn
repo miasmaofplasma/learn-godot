@@ -8,13 +8,21 @@ script = ExtResource("1_ll8f4")
 
 [node name="Icon" type="TextureRect" parent="." unique_id=1539653936]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SelectedBox" type="ReferenceRect" parent="." unique_id=1209063504]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 border_color = Color(1, 0.96862745, 0, 1)
 border_width = 2.0
 editor_only = false
+
+[node name="HoverOverlay" type="ColorRect" parent="." unique_id=1227956118]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0.78431374, 0.78039217, 1)
 
 [node name="CountLabel" type="Label" parent="." unique_id=800284257]
 layout_mode = 2

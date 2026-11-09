@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dsei10vt8w2f1"]
+
+[ext_resource type="Script" uid="uid://dpl4pjdn6gbvb" path="res://scenes/world/Timemanger.cs" id="1_a2n7j"]
+
+[node name="TimeManager" type="Node" unique_id=365245378]
+script = ExtResource("1_a2n7j")
+
+[node name="WorldTimer" type="Timer" parent="." unique_id=774133230]
+wait_time = 2.0
+autostart = true

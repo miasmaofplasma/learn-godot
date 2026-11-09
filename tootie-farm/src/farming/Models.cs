@@ -4,8 +4,8 @@ namespace TootieFarm.Farming;
 public enum CropType
 {
     Radish,
-    Carrot,
     Tomato,
+    Carrot,
     Corn,
     Pumpkin
 }

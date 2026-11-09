@@ -10,6 +10,6 @@ metadata/_custom_type_script = "uid://c0q0oap7vjqc7"
 
 [resource]
 script = ExtResource("1_avae3")
-CropType = 2
+CropType = 1
 CropCycles = SubResource("Resource_hmt0h")
 metadata/_custom_type_script = "uid://c7d5i8s3gu144"

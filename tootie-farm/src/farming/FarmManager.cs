@@ -10,16 +10,19 @@ public enum CanUseItemEnum
     No,
     NotFarmingTile,
 }
-public record struct UseToolResult(bool Success, List<Items.CropItem> HarvestedCrops);
+public record struct UseToolResult(bool Success, Items.CropItem? HarvestedCrops);
 internal record Crop(CropData CropData);
 public partial class FarmManager : Node
 {
     [Export]
     public OutsideMap _outsideMap { get; set; } = null!;
     private Dictionary<Vector2I, Crop> _crops = new();
+    [Export]
+    private Timemanger _timeManager = null!;
     public override void _Ready()
     {
         FatalException.ThrowIfNull(_outsideMap, nameof(OutsideMap), this);
+        _timeManager?.DayUpdated += _ => IncrementDay();
     }
     public CanUseItemEnum CanUseItem(Vector2I cell, Items.ItemData item)
     {
@@ -47,8 +50,9 @@ public partial class FarmManager : Node
             return false;
         }
 
-        _crops.Add(cell, new Crop((CropData)seed.GrownCrop.Duplicate(deep: true)));
-        _outsideMap.SetCrop(cell, seed.GrownCrop.CropType, seed.GrownCrop.CropCycles.GetStage());
+        var cropData = (CropData)seed.GrownCrop.Duplicate(deep: true);
+        _crops.Add(cell, new Crop(cropData));
+        _outsideMap.SetCrop(cell, cropData.CropType, cropData.CropCycles.GetStage());
         return true;
     }
     private CanUseItemEnum CanUseTool(Vector2I cell, Items.ToolItem tool)
@@ -69,15 +73,20 @@ public partial class FarmManager : Node
     }
     private CanUseItemEnum CanPlantSeed(Vector2I cell, Items.SeedItem tool)
     {
+        var isTileUsable = IsTileUsable(cell);
+        if (isTileUsable != CanUseItemEnum.Yes)
+        {
+            return isTileUsable;
+        }
+
         if (_outsideMap.GetFarmSoilState(cell) is SoilState.Cleared or SoilState.FlatDry or SoilState.FlatWet)
         {
             return CanUseItemEnum.No;
         }
 
-        var isTileUsable = IsTileUsable(cell);
-        if (isTileUsable != CanUseItemEnum.Yes)
+        if (_crops.ContainsKey(cell))
         {
-            return isTileUsable;
+            return CanUseItemEnum.No;
         }
 
         return CanUseItemEnum.Yes;
@@ -125,13 +134,19 @@ public partial class FarmManager : Node
 
     private UseToolResult UseHarvestAction(Vector2I cell)
     {
-        throw new NotImplementedException();
-        // if (!CanHarvest(cell).Equals(CanUseItemEnum.Yes))
-        // {
-        //     return new UseToolResult { Success = false };
-        // }
-        //
-        // return new UseToolResult { Success = true };
+        var foundCrop = _crops.TryGetValue(cell, out Crop? crop);
+        if (!foundCrop)
+        {
+            return new UseToolResult { Success = false };
+        }
+        if (!crop!.CropData.CropCycles.Finished())
+        {
+            return new UseToolResult { Success = false };
+        }
+
+        _outsideMap.ClearCrop(cell);
+        _crops.Remove(cell);
+        return new UseToolResult { Success = true, HarvestedCrops = Items.ItemRepository.GetCropItem(crop!.CropData.CropType) };
     }
 
     private CanUseItemEnum IsTileUsable(Vector2I cell)
@@ -187,8 +202,17 @@ public partial class FarmManager : Node
         {
             return isTileUsable;
         }
+        var foundCrop = _crops.TryGetValue(cell, out Crop? crop);
+        if (!foundCrop)
+        {
+            return CanUseItemEnum.No;
+        }
+        if (!crop!.CropData.CropCycles.Finished())
+        {
+            return CanUseItemEnum.No;
+        }
 
-        throw new NotImplementedException();
+        return CanUseItemEnum.Yes;
     }
 
     public void IncrementDay()
@@ -197,19 +221,6 @@ public partial class FarmManager : Node
         {
             crop.CropData.CropCycles.IncrementDay();
             _outsideMap.SetCrop(cell, crop.CropData.CropType, crop.CropData.CropCycles.GetStage());
-        }
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
-        {
-            string letter = OS.GetKeycodeString(keyEvent.Keycode);
-            if (letter == "R")
-            {
-                GD.Print("incrementing day");
-                IncrementDay();
-            }
         }
     }
 }

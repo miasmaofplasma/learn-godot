@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_2prb5")
 Action = 1
-Id = "sythe"
-DisplayName = "Sythe"
+Id = "watering_can"
+DisplayName = "Watering Can"
 Icon = ExtResource("1_4hkdo")
 metadata/_custom_type_script = "uid://m1vohqlio7vs"

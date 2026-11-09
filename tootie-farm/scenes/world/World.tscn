@@ -2,22 +2,29 @@
 
 [ext_resource type="Script" uid="uid://ccncfy07ud25y" path="res://scenes/world/World.cs" id="1_world"]
 [ext_resource type="PackedScene" uid="uid://bo7ydslpbsp7e" path="res://src/farming/farm_manager.tscn" id="2_6m72w"]
+[ext_resource type="PackedScene" uid="uid://dsei10vt8w2f1" path="res://scenes/world/timemanger.tscn" id="2_252at"]
 [ext_resource type="PackedScene" uid="uid://cwvwwhcca6geq" path="res://src/inventory/ui/inventory_ui.tscn" id="2_i1jm3"]
 [ext_resource type="PackedScene" uid="uid://cxd8bhb1le11s" path="res://src/maps/outside/outside_map.tscn" id="3_sl2e5"]
 [ext_resource type="PackedScene" uid="uid://b2brqy0m46pix" path="res://src/player/player.tscn" id="4_player"]
 [ext_resource type="PackedScene" uid="uid://ca3yw5g1gpbsj" path="res://src/inventory/inventory_manager.tscn" id="5_qxiha"]
+[ext_resource type="PackedScene" uid="uid://uyb7onif7c2r" path="res://scenes/world/day_night_cycle.tscn" id="6_qh0kd"]
+[ext_resource type="Script" uid="uid://bdihyptimgwgo" path="res://scenes/world/DayNightCycle.cs" id="6_yr1n6"]
 
 [node name="World" type="Node2D" unique_id=611135889]
 y_sort_enabled = true
 script = ExtResource("1_world")
 
-[node name="InventoryUI" parent="." unique_id=1668824589 node_paths=PackedStringArray("_inventoryManager") instance=ExtResource("2_i1jm3")]
-_inventoryManager = NodePath("../InventoryManager")
-
-[node name="FarmManager" parent="." unique_id=720521802 node_paths=PackedStringArray("_outsideMap") instance=ExtResource("2_6m72w")]
-_outsideMap = NodePath("../OutsideMap")
+[node name="TimeManager" parent="." unique_id=365245378 instance=ExtResource("2_252at")]
 
 [node name="InventoryManager" parent="." unique_id=89734970 instance=ExtResource("5_qxiha")]
+
+[node name="FarmManager" parent="." unique_id=720521802 node_paths=PackedStringArray("_outsideMap", "_timeManager") instance=ExtResource("2_6m72w")]
+_outsideMap = NodePath("../OutsideMap")
+_timeManager = NodePath("../TimeManager")
+
+[node name="DayNightCycle" parent="." unique_id=491337239 node_paths=PackedStringArray("_timeManager") instance=ExtResource("6_qh0kd")]
+script = ExtResource("6_yr1n6")
+_timeManager = NodePath("../TimeManager")
 
 [node name="OutsideMap" parent="." unique_id=487502240 instance=ExtResource("3_sl2e5")]
 
@@ -25,3 +32,13 @@ _outsideMap = NodePath("../OutsideMap")
 position = Vector2(722, 768)
 farmManager = NodePath("../FarmManager")
 _inventory = NodePath("../InventoryManager")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=400884419]
+
+[node name="InventoryUI" parent="HUD" unique_id=1668824589 node_paths=PackedStringArray("_inventoryManager") instance=ExtResource("2_i1jm3")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+_inventoryManager = NodePath("../../InventoryManager")
